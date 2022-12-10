@@ -10,7 +10,7 @@ def find_first_x_nonduplicate_characters(string: str, x: int):
             print(i+x, end=" ")
             return string[i:i+x]
     return None
-    
+
 
 with open("input/day6.txt") as f:
     data = f.read()
