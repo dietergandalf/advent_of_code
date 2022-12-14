@@ -1,14 +1,11 @@
 
-from typing import List
-
-
 def get_priority(c: str) -> int:
     if c.islower():
         return 1 + (ord(c) - ord('a'))
     else:
         return 27 + (ord(c) - ord("A"))
 
-def get_badge_priorities(lines: List[str]) -> List[int]:
+def get_badge_priorities(lines: list[str]) -> list[int]:
     # for every 3 lines in the input, we need to find the one character present in all 3 lines
     priorities = []
     # split lines into lists of 3 lines
