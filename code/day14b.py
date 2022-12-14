@@ -22,19 +22,11 @@ def print_map(grid):
 
 def fill_line(grid, start, end):
     if start[0] == end[0]:
-        if start[1] > end[1]:
-            for y in range(end[1], start[1] + 1):
-                grid[start[0]][y] = 1
-        else:
-            for y in range(start[1], end[1] + 1):
-                grid[start[0]][y] = 1
+        for y in range(min(start[1], end[1]), max(start[1], end[1]) + 1):
+            grid[start[0]][y] = 1
     else:
-        if start[0] > end[0]:
-            for x in range(end[0], start[0] + 1):
-                grid[x][start[1]] = 1
-        else:
-            for x in range(start[0], end[0] + 1):
-                grid[x][start[1]] = 1
+        for x in range(min(start[0], end[0]), max(start[0],end[0]) + 1):
+            grid[x][start[1]] = 1
 
 def sand_physics(grid, sand):
     while True:

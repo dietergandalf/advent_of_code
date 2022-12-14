@@ -1,54 +1,65 @@
-def readinput(file):
-    # MonkeyList: 0=Items(list(int)), 1=Operation(list(str)), 2=Test(int), 3=True(int), 4=False(int)
+class monkey:
+    def __init__(self, items: list[int], operation: list[str], test: int, true: int, false: int):
+        self.items = items
+        self.operation = operation
+        self.test = test
+        self.true = true
+        self.false = false
+        self.operations = 0
+
+    def __str__(self):
+        return f"Items: {self.items}, Operation: {self.operation}, Test: {self.test}, True: {self.true}, False: {self.false}, Operations: {self.operations}"
+
+def readinput(file) -> list[monkey]:
+    # MonkeyList: 0=Items(list(int)), 1=Operation(list(str)), 2=Test(int), 3=True(int), 4=False(int), 5=Operations(int)
     MonkeyList = []
     with open(file) as f:
         Monkeys = f.read().strip().split("\n\n")
-        for monkey in Monkeys:
-            stats = []
-            monkey = monkey.split("\n")
-            for i, line in enumerate(monkey):
+        for monkeyx in Monkeys:
+
+            items = []
+            operation = []
+            test_stuff = []
+            monkeyx = monkeyx.split("\n")
+            for i, line in enumerate(monkeyx):
                 stuff = line.strip().split(" ")
-                items = []
-                operation = []
                 if i == 1:
                     for item in stuff:
                         if item == "Starting" or item == "items:":
                             continue
                         item = item.replace(",", "")
                         items.append(int(item))
-                    stats.append(items)
                 elif i == 2:
                     for i in range(len(stuff)):
                         if i > 3:
                             operation.append(stuff[i])
-                    stats.append(operation)
                 elif i == 3:
-                    stats.append(int(stuff[3]))
-                elif i == 4 or i == 5:
-                    stats.append(int(stuff[5]))
-            stats.append(0)
+                    test_stuff.append(int(stuff[3]))
+                elif i > 3:
+                    test_stuff.append(int(stuff[5]))
+            stats = monkey(items, operation, test_stuff[0], test_stuff[1], test_stuff[2])
             MonkeyList.append(stats)
     return MonkeyList
 
-def round(MonkeyList, mod: int = 0):
-    for monkey in MonkeyList:
-        while monkey[0] != []:
-            item = monkey[0].pop()
-            item = calc_worry_lvl(monkey, item)
+def round(MonkeyList: list[monkey], mod: int = 0):
+    for monkeyx in MonkeyList:
+        while monkeyx.items != []:
+            item = monkeyx.items.pop()
+            item = calc_worry_lvl(monkeyx, item)
             if mod != 0:
                 item %= mod
             else:
                 item //= 3
                 
-            monkey[5] += 1
-            if check_condition(monkey[2], item):
-                MonkeyList[monkey[3]][0].append(item)
+            monkeyx.operations += 1
+            if check_condition(monkeyx.test, item):
+                MonkeyList[monkeyx.true].items.append(item)
             else:
-                MonkeyList[monkey[4]][0].append(item)
+                MonkeyList[monkeyx.false].items.append(item)
 
-def calc_worry_lvl(monkey, item: int) -> int:
-    operator = monkey[1][0]
-    operand = monkey[1][1]
+def calc_worry_lvl(monkey: monkey, item: int) -> int:
+    operator = monkey.operation[0]
+    operand = monkey.operation[1]
     if operand == "old":
         operand = item
     else:
@@ -60,20 +71,20 @@ def calc_worry_lvl(monkey, item: int) -> int:
 
     return item
 
-def check_condition(div_by, item: int) -> bool:
+def check_condition(div_by: int, item: int) -> bool:
     return item % div_by == 0
 
-def print_monkey_list(MonkeyList):
+def print_monkey_list(MonkeyList: list[monkey]):
     for monkey in MonkeyList:
-        print(f"Monkey {MonkeyList.index(monkey)}:", monkey[0], monkey[5])
+        print(f"Monkey {MonkeyList.index(monkey)}:", monkey.items, monkey.operations)
     print()
 
-def get_monkey_buisness(MonkeyList):
+def get_monkey_buisness(MonkeyList: list[monkey]):
     monkey_buisness = 0
     max_buisness = 0
     second_max_buisness = 0
     for monkey in MonkeyList:
-        operations = monkey[5]
+        operations = monkey.operations
         if operations > max_buisness:
             second_max_buisness = max_buisness
             max_buisness = operations
@@ -93,8 +104,8 @@ if __name__ == "__main__":
     
     # Part 2
     mod = 1
-    for monkey in MonkeyList:
-        mod *= monkey[2]
+    for monkeyx in MonkeyList:
+        mod *= monkeyx.test
     for _ in range(10_000):
         round(MonkeyList, mod)
-    get_monkey_buisness(MonkeyList)    
+    get_monkey_buisness(MonkeyList)
