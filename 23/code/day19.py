@@ -72,7 +72,7 @@ class Workflow:
       return f"{self.name}: {self.rules}"
 
 
-def count(ranges, name, workflowDict):
+def count(ranges, name, workflowDict): # only used in part 2
    if name =="R":
       return 0
    if name == "A":
