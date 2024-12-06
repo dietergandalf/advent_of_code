@@ -24,7 +24,7 @@ def createFiles(year, day=None):
     #files
     if not os.path.exists(path_py):
         with open(path_py, "w") as f:
-            f.write(f"# Day {day} Advent of Code {year}\n\ndef solve(file, part=0):\n   pass\n\nif __name__ == '__main__':\n   solve(r'{path_test}', 0)\n   #solve(r'{path_input}', 0)\n")
+            f.write(f"# Day {day} Advent of Code {year}\n\ndef solve(file, part=0):\n    with(open(file, encoding='utf-8')) as f:\n        ...\n\nif __name__ == '__main__':\n    solve(r'{path_test}', 0)\n    #solve(r'{path_input}', 0)\n")
     if not os.path.exists(path_input):
         with open(path_input, "w") as f:
             f.write(f"")
